@@ -1,0 +1,52 @@
+services:
+  # RabbitMQ 服務
+  rabbitmq:
+    image: 'rabbitmq:3.6-management-alpine'
+    container_name: jobmarket-rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=worker
+      - RABBITMQ_DEFAULT_PASS=worker
+      - RABBITMQ_DEFAULT_VHOST=/
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    # Docker Swarm 模式的設定
+    deploy:
+      mode: replicated                      # 啟用 replicated 模式
+      replicas: 1                           # 啟動一個副本（通常不會是 global）
+      placement:
+        constraints: [node.role == manager] # 限定只能部署到 manager 節點（可改為 node label）
+        # constraints: [node.labels.rabbitmq == true]
+    networks:
+      - jobmarket-swarm-network
+
+  # Flower (Celery 監控)
+  flower:
+    image: mher/flower:0.9.5
+    container_name: jobmarket-flower
+    restart: always
+    command: ["flower", "--broker=amqp://worker:worker@rabbitmq", "--port=5555"]  
+    ports:
+      - "5555:5555"
+    depends_on:
+      - rabbitmq
+    # Swarm 部署設定
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+        # constraints: [node.labels.rabbitmq == true]
+    networks:
+      - jobmarket-swarm-network
+
+networks:
+  jobmarket-swarm-network:
+    # 加入已經存在的網路
+    external: true
+
+volumes:
+  rabbitmq_data:
