@@ -2,10 +2,10 @@ services:
   # MySQL 服務
   mysql:
     image: mysql:8.0
-    container_name: jobmarket-mysql
+    # container_name: jobmarket-mysql
     # 設定 mysql 使用原生認證的密碼 hash
     command: mysqld --default-authentication-plugin=mysql_native_password
-    restart: always
+    # restart: always # 在 docker swarm 中不需要
     ports:
       - "3306:3306"
     environment:
@@ -28,9 +28,10 @@ services:
 
   # phpMyAdmin (可選)
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin:5.1.0
-    container_name: jobmarket-phpmyadmin
-    restart: always
+    # image: phpmyadmin/phpmyadmin:5.1.0
+    image: arm64v8/phpmyadmin
+    # container_name: jobmarket-phpmyadmin
+    # restart: always # 在 docker swarm 中不需要
     # 這個在新版 Docker Compose 中不需要
     # links: 
     #     - mysql:db

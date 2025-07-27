@@ -2,8 +2,8 @@ services:
   # RabbitMQ 服務
   rabbitmq:
     image: 'rabbitmq:3.6-management-alpine'
-    container_name: jobmarket-rabbitmq
-    restart: always
+    # container_name: jobmarket-rabbitmq # 在 docker swarm 中不需要
+    # restart: always # 在 docker swarm 中不需要
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -25,10 +25,13 @@ services:
 
   # Flower (Celery 監控)
   flower:
-    image: mher/flower:0.9.5
-    container_name: jobmarket-flower
-    restart: always
-    command: ["flower", "--broker=amqp://worker:worker@rabbitmq", "--port=5555"]  
+    # image: mher/flower:0.9.5
+    image: mher/flower:1.2.0
+    # container_name: jobmarket-flower # 在 docker swarm 中不需要
+    # restart: always # 在 docker swarm 中不需要
+    # command: ["flower", "--broker=amqp://worker:worker@rabbitmq", "--port=5555"]  
+    # Docker Swarm 比較嚴格，MAC M1 不能使用 0.9.5 的 image， 1.2.0 的 image 要使用 celery 指令
+    command: ["celery", "--broker=amqp://worker:worker@rabbitmq", "flower", "--port=5555"]
     ports:
       - "5555:5555"
     depends_on:
