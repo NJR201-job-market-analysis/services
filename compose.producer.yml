@@ -2,7 +2,7 @@ services:
   jobmarket-cake-producer:  # 定義一個服務
     image: ${DOCKER_IMAGE_USERNAME}/jobmarket-crawler:${DOCKER_IMAGE_VERSION}  # 使用的映像檔名稱與標籤（版本）
     # container_name: jobmarket-cake-producer
-    command: pipenv run python crawlers.cake.producer
+    command: pipenv run python -m crawlers.cake.producer
     # swarm 設定
     deploy:
       mode: replicated
