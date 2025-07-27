@@ -1,8 +1,8 @@
 services:
-  jobmarket-worker-1:  # 定義一個服務
+  crawler-worker:  # 定義一個服務
     image: ${DOCKER_IMAGE_USERNAME}/jobmarket-crawler:${DOCKER_IMAGE_VERSION}  # 使用的映像檔名稱與標籤（版本）
     # container_name: jobmarket-worker-1
-    command: pipenv run celery -A crawlers.worker worker --loglevel=info --hostname=%h -Q jobmarket-worker-1
+    command: pipenv run celery -A crawlers.worker worker --loglevel=info --hostname=%h -Q crawler-queue
     # swarm 設定
     deploy:
       mode: replicated
