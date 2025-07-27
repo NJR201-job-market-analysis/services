@@ -1,8 +1,16 @@
 services:
   jobmarket-cake-producer:  # 定義一個服務
     image: ${DOCKER_IMAGE_USERNAME}/jobmarket-crawler:${DOCKER_IMAGE_VERSION}  # 使用的映像檔名稱與標籤（版本）
-    container_name: jobmarket-cake-producer
+    # container_name: jobmarket-cake-producer
     command: pipenv run python crawlers.cake.producer
+    # swarm 設定
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        # 設定在
+        # node label crawler_producer = true 的機器上執行
+        constraints: [node.labels.crawler_producer == true]
     # restart: always  # 若容器停止或崩潰，自動重新啟動
     environment:
       - TZ=Asia/Taipei  # 設定時區為台北（UTC+8）
