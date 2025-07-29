@@ -25,6 +25,7 @@ services:
 
   # Flower (Celery 監控)
   flower:
+    # NOTE: Windows 環境下使用這個
     # image: mher/flower:0.9.5
     # command: ["flower", "--broker=amqp://worker:worker@rabbitmq", "--port=5555"]
     image: mher/flower:1.2.0
