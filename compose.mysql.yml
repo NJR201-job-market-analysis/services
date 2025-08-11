@@ -25,6 +25,23 @@ services:
         # constraints: [node.labels.mysql == true]
     networks:
       - jobmarket-swarm-network
+  
+  # 資料庫初始化服務
+  db-init:
+    image: iyauta/jobmarket-database:${DATABASE_IMAGE_VERSION}
+    depends_on:
+      - mysql
+    restart: on-failure
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+    networks:
+      - jobmarket-swarm-network
 
   # phpMyAdmin (可選)
   phpmyadmin:
