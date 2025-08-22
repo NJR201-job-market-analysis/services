@@ -46,8 +46,9 @@ services:
   # phpMyAdmin (可選)
   phpmyadmin:
     # NOTE: Windows 環境下使用這個
-    # image: phpmyadmin/phpmyadmin:5.1.0
-    image: arm64v8/phpmyadmin
+    image: phpmyadmin/phpmyadmin:5.1.0
+    # NOTE: MAC 環境下使用這個
+    # image: arm64v8/phpmyadmin
     # 這個在新版 Docker Compose 中不需要
     # links: 
     #     - mysql:db
