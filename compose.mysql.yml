@@ -28,7 +28,7 @@ services:
   
   # 資料庫初始化服務
   db-init:
-    image: iyauta/jobmarket-database:${DATABASE_IMAGE_VERSION}
+    image: ${DOCKER_IMAGE_USERNAME}/jobmarket-database:${DOCKER_IMAGE_VERSION}
     depends_on:
       - mysql
     restart: on-failure
