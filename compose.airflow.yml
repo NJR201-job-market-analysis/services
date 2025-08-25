@@ -2,7 +2,7 @@ version: '3.0'
 
 services:
   # 初始化 Airflow 資料庫
-  initdb:
+  init-db:
     image: ${DOCKER_IMAGE_USERNAME}/jobmarket-dataflow:${DOCKER_IMAGE_VERSION}  # 使用指定版本的自定義映像
     command: pipenv run airflow db init  # 初始化 Airflow 的 metadata DB
     restart: no
